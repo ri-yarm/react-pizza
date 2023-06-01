@@ -1,6 +1,23 @@
+import { useState } from 'react';
+
 import './Sort.less';
 
 const Sort = () => {
+  const sort = ['популярности', 'цене', 'алфавиту'];
+  const [isVisible, setIsVisible] = useState(false);
+  const [selectedSort, setSelectedSort] = useState(0);
+  const sortName = sort[selectedSort]
+
+  const handleClickSort = (index) => {
+    setSelectedSort(index)
+    setIsVisible(false)
+  }
+
+  const sortElements = sort.map((el, index) => (
+    <li onClick={() => handleClickSort(index)} className={selectedSort === index ? 'active' : ''} key={index}>
+      {el}
+    </li>
+  ));
   return (
     <div className="sort">
       <div className="sort__label">
@@ -17,15 +34,13 @@ const Sort = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>популярности</span>
+        <span onClick={() => setIsVisible(!isVisible)}>{sortName}</span>
       </div>
-      <div className="sort__popup">
-        <ul>
-          <li className="active">популярности</li>
-          <li>цене</li>
-          <li>алфавиту</li>
-        </ul>
-      </div>
+      {isVisible && (
+        <div className="sort__popup">
+          <ul>{sortElements}</ul>
+        </div>
+      )}
     </div>
   );
 };

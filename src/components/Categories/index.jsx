@@ -1,16 +1,36 @@
+import { useState } from 'react';
+
 import './Categories.less';
 
 const Categories = () => {
+  const [active, setActive] = useState(0);
+
+  const onClickCategory = (index) => setActive(index);
+
+  const categories = [
+    'Все',
+    'Мясные',
+    'Вегетарианская',
+    'Гриль',
+    'Острые',
+    'Закрытые',
+  ];
+
+  const categoriesElement = categories.map((el, index) => {
+    return (
+      <li
+        className={`${active === index ? 'active' : ''}`}
+        key={index}
+        onClick={() => onClickCategory(index)}
+      >
+        {el}
+      </li>
+    );
+  });
+
   return (
     <div className="categories">
-      <ul>
-        <li className="active">Все</li>
-        <li>Мясные</li>
-        <li>Вегетарианская</li>
-        <li>Гриль</li>
-        <li>Острые</li>
-        <li>Закрытые</li>
-      </ul>
+      <ul>{categoriesElement}</ul>
     </div>
   );
 };
