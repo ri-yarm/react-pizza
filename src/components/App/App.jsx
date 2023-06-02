@@ -1,33 +1,30 @@
-import { useState } from 'react';
-/* import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg'; */
-// import '../../styles/main.less';
+import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import axios from 'axios';
 
 import './App.less';
 import Header from '../Header';
-import Categories from '../Categories';
-import Sort from '../Sort';
-import Button from '../Button';
-import PizzaBlock from '../PizzaBlock';
-
-import PIZZAS from '../../assets/pizzas.json';
+import Home from '../../pages/Home';
+import Cart from '../../pages/Cart';
+import NotFound from '../../pages/NotFound';
 
 function App() {
-  const [count, setCount] = useState(0);
+  
 
-  const PizzaElements = PIZZAS.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  // const PizzaElements = pizzas.map((obj) => <Skeleton key={obj.id} {...obj} />);
+  // const PizzaElements = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  
 
   return (
     <div className="wrapper">
       <Header />
       <div className="content">
         <div className="container">
-          <div className="content__top">
-            <Categories />
-            <Sort />
-          </div>
-          <h2 className="content__title">Все пиццы</h2>
-          <div className="content__items">{PizzaElements}</div>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/*' element={<NotFound />} />
+          </Routes>
         </div>
       </div>
     </div>
