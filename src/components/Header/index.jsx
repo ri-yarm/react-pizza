@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <div className="header">
       <div className="container">
-        <Link to='/'>
+        <Link to="/">
           <div className="header__logo">
             <img width="38" src={logo} alt="Pizza logo" />
             <div>
@@ -17,9 +17,11 @@ const Header = () => {
             </div>
           </div>
         </Link>
-        <div className="header__cart">
-          <Button />
-        </div>
+        {/* <Link to="/cart"> */}
+          <div className="header__cart">
+            <Button />
+          </div>
+        {/* </Link> */}
       </div>
     </div>
   );
