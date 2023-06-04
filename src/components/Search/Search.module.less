@@ -1,0 +1,53 @@
+.container {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  top: auto;
+  left: -96px;
+
+  .svg_lupa {
+    width: 24px;
+    height: 24px;
+    margin-right: 6px;
+
+    opacity: .5;
+
+    position: absolute;
+    top: auto;
+    left: 8px;
+  }
+
+  .svg_x {
+    position: absolute;
+    opacity: .5;
+    right: 10px;
+    top: auto;
+
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+
+    }
+  }
+
+  .input {
+    border-radius: 6px;
+    padding: 6px;
+    padding-left: 40px;
+    padding-right: 40px;
+
+    font-size: 20px;
+    border: 1px rgba(0, 0, 0, .1) solid;
+    outline: none;
+
+    width: 326px;
+
+    &:focus {
+    border: 1px rgba(0, 0, 0, .3) solid;
+
+    }
+  }
+}

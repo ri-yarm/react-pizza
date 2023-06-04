@@ -7,7 +7,7 @@ import Sort from '../../components/Sort';
 import PizzaBlock from '../../components/PizzaBlock';
 import Skeleton from '../../components/PizzaBlock/Skeleton';
 
-const Home = () => {
+const Home = ({ searchValue }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [pizzas, setPizzas] = useState([]);
 
@@ -16,25 +16,46 @@ const Home = () => {
     name: 'популярности',
     property: 'rating',
   });
-  console.log(sortType, categoryId);
   useEffect(() => {
     const category = categoryId > 0 ? categoryId : '';
     const sort = sortType.property.replace('-', '');
     const order = sortType.property.includes('-') ? 'asc' : 'desc';
+    const search = searchValue ? `search=${searchValue}` : '';
 
     setIsLoading(true);
     axios(
-      `https://64799bb4a455e257fa636986.mockapi.io/pizzas?category=${category}&sortBy=${sort}&order=${order}`
+      `https://64799bb4a455e257fa636986.mockapi.io/pizzas?category=${category}&sortBy=${sort}&order=${order}${search}`
     ).then((res) => {
       setPizzas(res.data);
       setIsLoading(false);
     });
+    // при отрисовке компонента прыгаем в начало страницы
     window.scrollTo(0, 0);
-  }, [categoryId, sortType]);
+  }, [categoryId, sortType, searchValue]);
 
-  const pizzaElements = isLoading
-    ? [...Array(10)].map((g, index) => <Skeleton key={index} />)
-    : pizzas.map((el) => <PizzaBlock key={el.id} {...el} />);
+  /* const searchingFilter = () => {
+    return filter((el) => {
+      if (el.title.includes(searchValue.toLowerCase)) return true
+      return false
+    })
+  } */
+  /** Функция фильтрация пицц */
+  /* const searchingFilter = (parent) =>
+    parent.filter((el) => {
+      if (el.title.toLowerCase().includes(searchValue.toLowerCase())) return true;
+      return false;
+    }); */
+
+  /** пиццы, уже отфильтруемые */
+  /* const pizza = searchingFilter(pizzas).map((el) => (
+    <PizzaBlock key={el.id} {...el} />
+  )); */
+  const pizza = pizzas.map((el) => <PizzaBlock key={el.id} {...el} />);
+
+  /** скелетоны для пицц */
+  const skeleton = [...Array(10)].map((_, index) => <Skeleton key={index} />);
+
+  const pizzaElements = isLoading ? skeleton : pizza;
 
   return (
     <div className="container">
