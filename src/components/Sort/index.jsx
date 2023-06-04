@@ -2,20 +2,30 @@ import { useState } from 'react';
 
 import './Sort.less';
 
-const Sort = () => {
-  const sort = ['популярности', 'цене', 'алфавиту'];
+const Sort = ({ value, setValue }) => {
+  const sort = [
+    { name: 'популярности', property: 'rating' },
+    { name: 'популярности возрастание', property: '-rating' },
+    { name: 'цене', property: 'price' },
+    { name: 'цене возрастание', property: '-price' },
+    { name: 'алфавиту', property: 'title' },
+    { name: 'алфавиту возрастание', property: '-title' },
+  ];
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedSort, setSelectedSort] = useState(0);
-  const sortName = sort[selectedSort]
 
   const handleClickSort = (index) => {
-    setSelectedSort(index)
-    setIsVisible(false)
-  }
+    // setSelectedSort(index)
+    setValue(index);
+    setIsVisible(false);
+  };
 
   const sortElements = sort.map((el, index) => (
-    <li onClick={() => handleClickSort(index)} className={selectedSort === index ? 'active' : ''} key={index}>
-      {el}
+    <li
+      onClick={() => handleClickSort(el)}
+      className={value.property === el.property ? 'active' : ''}
+      key={index}
+    >
+      {el.name}
     </li>
   ));
   return (
@@ -34,7 +44,7 @@ const Sort = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setIsVisible(!isVisible)}>{sortName}</span>
+        <span onClick={() => setIsVisible(!isVisible)}>{value.name}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">

@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import './Categories.less';
 
-const Categories = () => {
-  const [active, setActive] = useState(0);
+const Categories = ({value, setValue}) => {
+  // const [active, setActive] = useState(0);
 
-  const onClickCategory = (index) => setActive(index);
+  // const onClickCategory = (index) => setActive(index);
 
   const categories = [
     'Все',
@@ -19,9 +19,9 @@ const Categories = () => {
   const categoriesElement = categories.map((el, index) => {
     return (
       <li
-        className={`${active === index ? 'active' : ''}`}
+        className={`${value === index ? 'active' : ''}`}
         key={index}
-        onClick={() => onClickCategory(index)}
+        onClick={() => setValue(index)}
       >
         {el}
       </li>
