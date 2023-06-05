@@ -1,0 +1,39 @@
+.paginate {
+  margin: 40px 0 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+
+  li {
+    border-radius: 50%;
+    background-color: #fe5f1e;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    a {
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      width: 100%;
+    }
+
+    &:hover {
+      background-color: #fe5f1e;
+      opacity: 0.5;
+    }
+  }
+}
+
+.active {
+  background-color: #726e6e !important;
+}
