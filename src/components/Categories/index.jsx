@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { setCategoryId } from '../redux/slices/filterslice';
 
 import './Categories.less';
 
-const Categories = ({value, setValue}) => {
-  // const [active, setActive] = useState(0);
-
-  // const onClickCategory = (index) => setActive(index);
+const Categories = () => {
+  const dispatch = useDispatch();
+  const categoryId = useSelector((state) => state.filterSlice.categoryId);
 
   const categories = [
     'Все',
@@ -19,9 +20,9 @@ const Categories = ({value, setValue}) => {
   const categoriesElement = categories.map((el, index) => {
     return (
       <li
-        className={`${value === index ? 'active' : ''}`}
+        className={`${categoryId === index ? 'active' : ''}`}
         key={index}
-        onClick={() => setValue(index)}
+        onClick={() => dispatch(setCategoryId(index))}
       >
         {el}
       </li>
