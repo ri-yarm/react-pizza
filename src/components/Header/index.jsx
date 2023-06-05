@@ -6,7 +6,7 @@ import './Header.less';
 
 import logo from '../../assets/react-logo.svg';
 
-const Header = ({searchValue, setSearchValue}) => {
+const Header = () => {
   return (
     <div className="header">
       <div className="container">
@@ -19,7 +19,7 @@ const Header = ({searchValue, setSearchValue}) => {
             </div>
           </div>
         </Link>
-        <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+        <Search />
         {/* <Link to="/cart"> */}
           <div className="header__cart">
             <Button />

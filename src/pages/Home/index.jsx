@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+
+import { Context } from '../../components/App/App';
 
 import Categories from '../../components/Categories';
 import Sort from '../../components/Sort';
@@ -8,7 +10,8 @@ import PizzaBlock from '../../components/PizzaBlock';
 import Skeleton from '../../components/PizzaBlock/Skeleton';
 import Pagination from '../../components/Pagination';
 
-const Home = ({ searchValue }) => {
+const Home = () => {
+  const {searchValue} = useContext(Context)
   const [isLoading, setIsLoading] = useState(false);
   const [pizzas, setPizzas] = useState([]);
 
@@ -37,23 +40,6 @@ const Home = ({ searchValue }) => {
     window.scrollTo(0, 0);
   }, [categoryId, sortType, currentPage, searchValue]);
 
-  /* const searchingFilter = () => {
-    return filter((el) => {
-      if (el.title.includes(searchValue.toLowerCase)) return true
-      return false
-    })
-  } */
-  /** Функция фильтрация пицц */
-  /* const searchingFilter = (parent) =>
-    parent.filter((el) => {
-      if (el.title.toLowerCase().includes(searchValue.toLowerCase())) return true;
-      return false;
-    }); */
-
-  /** пиццы, уже отфильтруемые */
-  /* const pizza = searchingFilter(pizzas).map((el) => (
-    <PizzaBlock key={el.id} {...el} />
-  )); */
   const pizza = pizzas.map((el) => <PizzaBlock key={el.id} {...el} />);
 
   /** скелетоны для пицц */

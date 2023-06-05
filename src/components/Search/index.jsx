@@ -1,6 +1,12 @@
+import { useContext } from 'react';
+
+import { Context } from '../App/App';
+
 import styles from './Search.module.less';
 
-const Search = ({ searchValue, setSearchValue }) => {
+const Search = () => {
+const {searchValue, setSearchValue} = useContext(Context)
+
   return (
     <div className={styles.container}>
       <svg
