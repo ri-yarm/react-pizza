@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import { Context } from '../../components/App/App';
 
+import { setPizzas } from '../../components/redux/slices/pizzaSlice';
+
 import Categories from '../../components/Categories';
 import Sort from '../../components/Sort';
 
@@ -12,17 +14,19 @@ import Skeleton from '../../components/PizzaBlock/Skeleton';
 import Pagination from '../../components/Pagination';
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { searchValue } = useContext(Context);
   const dispatch = useDispatch();
 
-  const {categoryId, sort, currentPage} = useSelector((state) => state.filterSlice);
+  const { categoryId, sort, currentPage } = useSelector(
+    (state) => state.filterSlice
+  );
+  const { pizzas } = useSelector((state) => state.pizzaSlice);
 
-  const { searchValue } = useContext(Context);
-  const [isLoading, setIsLoading] = useState(false);
-  const [pizzas, setPizzas] = useState([]);
-
-
-
-  // const [currentPage, setCurrentPage] = useState(1);
+  const pizza = pizzas.map((el) => <PizzaBlock key={el.id} {...el} />);
+  /** скелетоны для пицц */
+  const skeleton = [...Array(10)].map((_, index) => <Skeleton key={index} />);
+  const pizzaElements = isLoading ? skeleton : pizza;
 
   useEffect(() => {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
@@ -34,19 +38,12 @@ const Home = () => {
     axios(
       `https://64799bb4a455e257fa636986.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortType}&order=${order}${search}`
     ).then((res) => {
-      setPizzas(res.data);
+      dispatch(setPizzas(res.data));
       setIsLoading(false);
     });
     // при отрисовке компонента прыгаем в начало страницы
     window.scrollTo(0, 0);
   }, [categoryId, sort, currentPage, searchValue]);
-
-  const pizza = pizzas.map((el) => <PizzaBlock key={el.id} {...el} />);
-
-  /** скелетоны для пицц */
-  const skeleton = [...Array(10)].map((_, index) => <Skeleton key={index} />);
-
-  const pizzaElements = isLoading ? skeleton : pizza;
 
   return (
     <div className="container">
@@ -56,7 +53,7 @@ const Home = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{pizzaElements}</div>
-      {categoryId === 0 ? <Pagination  /> : ''}
+      {categoryId === 0 ? <Pagination /> : ''}
     </div>
   );
 };

@@ -1,11 +1,39 @@
-import { useContext } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
+import debounce from 'lodash.debounce';
 
 import { Context } from '../App/App';
 
 import styles from './Search.module.less';
 
 const Search = () => {
-const {searchValue, setSearchValue} = useContext(Context)
+  const inputRef = useRef();
+  const [inputValue, setInputValue] = useState('');
+  const { searchValue, setSearchValue } = useContext(Context);
+
+  // При клике удаляем содержимое инпута и ставим на него фокус
+  const onClickExit = () => {
+    setSearchValue('');
+    setInputValue('')
+    inputRef.current.focus();
+  };
+
+  // Ставим значение инпуту через 400мс. Благодаря useCallback функция не пересоздаётся
+  const onSearchValue = useCallback(
+    debounce((str) => {
+      setSearchValue(str);
+    }, 400),
+    []
+  );
+
+  /**
+   * @setInputValue сохраняет значение инпута в свой стейт,
+   * @onSearchValue Сохраняет значение инпута в глобальный стейт,
+   * а благодаря @onSearchValue , делает этот через 400мс
+   */
+  const OnChangeInput = (e) => {
+    setInputValue(e.target.value);
+    onSearchValue(inputValue);
+  };
 
   return (
     <div className={styles.container}>
@@ -42,15 +70,17 @@ const {searchValue, setSearchValue} = useContext(Context)
         />
       </svg>
       <input
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
+        ref={inputRef}
+        value={inputValue}
+        onChange={OnChangeInput}
         className={styles.input}
+        // type="search"
         type="text"
         placeholder="Поиск пиццы ..."
       />
       {searchValue && (
         <svg
-          onClick={() => setSearchValue('')}
+          onClick={onClickExit}
           className={styles.svg_x}
           fill="none"
           stroke="currentColor"
