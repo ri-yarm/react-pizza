@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setSortType } from '../redux/slices/filterslice';
@@ -16,6 +16,7 @@ export const sortList = [
 
 const Sort = () => {
   const dispatch = useDispatch();
+  const sortRef = useRef();
 
   const sortType = useSelector((state) => state.filterSlice.sort);
   const [isVisible, setIsVisible] = useState(false);
@@ -24,6 +25,7 @@ const Sort = () => {
     dispatch(setSortType(index));
     setIsVisible(false);
   };
+
   const sortElements = sortList.map((el, index) => (
     <li
       onClick={() => handleClickSort(el)}
@@ -33,8 +35,20 @@ const Sort = () => {
       {el.name}
     </li>
   ));
+
+  //При монтировании создаём слушатель для клика вне области. При анмоунте, удаляем слушаетель
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.composedPath().includes(sortRef.current)) setIsVisible(false);
+    };
+
+    document.body.addEventListener('click', handleClickOutside);
+
+    return () => document.body.removeEventListener('click', handleClickOutside);
+  }, []);
+
   return (
-    <div className="sort">
+    <div className="sort" ref={sortRef}>
       <div className="sort__label">
         <svg
           width="10"
