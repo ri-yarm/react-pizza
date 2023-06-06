@@ -5,27 +5,26 @@ import { setSortType } from '../redux/slices/filterslice';
 
 import './Sort.less';
 
+export const sortList = [
+  { name: 'популярности', property: 'rating' },
+  { name: 'популярности возрастание', property: '-rating' },
+  { name: 'цене', property: 'price' },
+  { name: 'цене возрастание', property: '-price' },
+  { name: 'алфавиту', property: 'title' },
+  { name: 'алфавиту возрастание', property: '-title' },
+];
+
 const Sort = () => {
   const dispatch = useDispatch();
 
   const sortType = useSelector((state) => state.filterSlice.sort);
-
-  const sort = [
-    { name: 'популярности', property: 'rating' },
-    { name: 'популярности возрастание', property: '-rating' },
-    { name: 'цене', property: 'price' },
-    { name: 'цене возрастание', property: '-price' },
-    { name: 'алфавиту', property: 'title' },
-    { name: 'алфавиту возрастание', property: '-title' },
-  ];
   const [isVisible, setIsVisible] = useState(false);
 
   const handleClickSort = (index) => {
     dispatch(setSortType(index));
     setIsVisible(false);
   };
-
-  const sortElements = sort.map((el, index) => (
+  const sortElements = sortList.map((el, index) => (
     <li
       onClick={() => handleClickSort(el)}
       className={sortType.property === el.property ? 'active' : ''}
