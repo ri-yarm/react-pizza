@@ -1,7 +1,6 @@
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import qs from 'qs';
 
 import { Context } from '../../components/App/App';
@@ -9,7 +8,7 @@ import { Context } from '../../components/App/App';
 import { sortList } from '../../components/Sort';
 
 import { setFilters } from '../../components/redux/slices/filterslice';
-import { setPizzas } from '../../components/redux/slices/pizzaSlice';
+import { fetchPizzas } from '../../components/redux/slices/pizzaSlice';
 
 import Categories from '../../components/Categories';
 import Sort from '../../components/Sort';
@@ -24,34 +23,36 @@ const Home = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const [isLoading, setIsLoading] = useState(false);
   const { searchValue } = useContext(Context);
 
   const { categoryId, sort, currentPage } = useSelector(
     (state) => state.filterSlice
   );
-  const { pizzas } = useSelector((state) => state.pizzaSlice);
+  const { pizzas, status } = useSelector((state) => state.pizzaSlice);
 
-  // запрос к api. Получение пицц
-  const fetchPizzas = () => {
+  // запрос к api. Получение пицц через экшен редакса
+  const fetchAndUsePizzas = async () => {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const sortType = sort.property.replace('-', '');
     const order = sort.property.includes('-') ? 'asc' : 'desc';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    setIsLoading(true);
-    axios(
-      `https://64799bb4a455e257fa636986.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortType}&order=${order}${search}`
-    ).then((res) => {
-      dispatch(setPizzas(res.data));
-      setIsLoading(false);
-    });
+    // ! передаём всё в слайс
+    dispatch(
+      fetchPizzas({
+        category,
+        sortType,
+        order,
+        search,
+        currentPage,
+      })
+    );
   };
 
   const pizza = pizzas.map((el) => <PizzaBlock key={el.id} {...el} />);
   /** скелетоны для пицц */
   const skeleton = [...Array(10)].map((_, index) => <Skeleton key={index} />);
-  const pizzaElements = isLoading ? skeleton : pizza;
+  const pizzaElements = status === 'loading' ? skeleton : pizza;
 
   // Если был перерендер, сохраняем в в редакс то что находится в url строке
   useEffect(() => {
@@ -73,7 +74,7 @@ const Home = () => {
     window.scrollTo(0, 0);
 
     if (!isSearch.current) {
-      fetchPizzas();
+      fetchAndUsePizzas();
     }
 
     isSearch.current = false;
@@ -99,8 +100,19 @@ const Home = () => {
         <Categories />
         <Sort />
       </div>
-      <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{pizzaElements}</div>
+      {status === 'error' ? (
+        <h2
+          style={{ textAlign: 'center', margin: 120 }}
+          className="content__title"
+        >
+          Произошло страшное... <br /> Ваши пиццы не загрузились((
+        </h2>
+      ) : (
+        <>
+          <h2 className="content__title">Все пиццы</h2>
+          <div className="content__items">{pizzaElements}</div>
+        </>
+      )}
       {categoryId === 0 ? <Pagination /> : ''}
     </div>
   );
