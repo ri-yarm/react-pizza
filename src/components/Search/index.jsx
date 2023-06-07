@@ -1,18 +1,22 @@
-import { useCallback, useContext, useRef, useState } from 'react';
-import debounce from 'lodash.debounce';
+import { useCallback, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Context } from '../App/App';
+import { selectFilter, setSearchValue } from '../redux/slices/filterslice';
+
+import debounce from 'lodash.debounce';
 
 import styles from './Search.module.less';
 
 const Search = () => {
+  const dispatch = useDispatch()
+  const {searchValue} = useSelector(selectFilter)
   const inputRef = useRef();
   const [inputValue, setInputValue] = useState('');
-  const { searchValue, setSearchValue } = useContext(Context);
+  
 
   // При клике удаляем содержимое инпута и ставим на него фокус
   const onClickExit = () => {
-    setSearchValue('');
+    dispatch(setSearchValue(''))
     setInputValue('')
     inputRef.current.focus();
   };
@@ -20,7 +24,7 @@ const Search = () => {
   // Ставим значение инпуту через 400мс. Благодаря useCallback функция не пересоздаётся
   const onSearchValue = useCallback(
     debounce((str) => {
-      setSearchValue(str);
+      dispatch(setSearchValue(str));
     }, 400),
     []
   );
@@ -74,8 +78,8 @@ const Search = () => {
         value={inputValue}
         onChange={OnChangeInput}
         className={styles.input}
-        // type="search"
-        type="text"
+        type="search"
+        // type="text"
         placeholder="Поиск пиццы ..."
       />
       {searchValue && (

@@ -1,9 +1,7 @@
-import { useEffect, useContext, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import qs from 'qs';
-
-import { Context } from '../../components/App/App';
 
 import { sortList } from '../../components/Sort';
 
@@ -23,9 +21,7 @@ const Home = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const { searchValue } = useContext(Context);
-
-  const { categoryId, sort, currentPage } = useSelector(selectFilter);
+  const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
   const { pizzas, status } = useSelector(selectPizza);
 
   // запрос к api. Получение пицц через экшен редакса
