@@ -43,11 +43,16 @@ const cartSlice = createSlice({
     },
     clearAll(state, action) {
       state.items = [];
-      state.totalPrice = 0
+      state.totalPrice = 0;
     },
   },
 });
 
-export const { addPizza, removePizza, clearAll, decrementPizza } = cartSlice.actions;
+// селектор который вытаскивает данные из редакса
+export const selectorCart = (state) => state.cartSlice;
+export const selectorCartItemById = (id) => (state) => state.cartSlice.items.find((el) => el.id === id);
+
+export const { addPizza, removePizza, clearAll, decrementPizza } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { clearAll, selectorCart } from '../../components/redux/slices/cartSlice';
 
 import './Cart.less';
 
 import CartItem from '../../components/PizzaBlock/CartItem';
 import CartEmpty from './CartEmpty'
 
-import { clearAll } from '../../components/redux/slices/cartSlice';
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const { items, totalPrice } = useSelector((state) => state.cartSlice);
+  const { items, totalPrice } = useSelector(selectorCart);
   const totalCount = items.reduce((acc, el) => acc + el.count, 0);
 
   const cartElements = items.map((el) => <CartItem key={el.id} {...el} />);

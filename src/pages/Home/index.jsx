@@ -7,8 +7,8 @@ import { Context } from '../../components/App/App';
 
 import { sortList } from '../../components/Sort';
 
-import { setFilters } from '../../components/redux/slices/filterslice';
-import { fetchPizzas } from '../../components/redux/slices/pizzaSlice';
+import filterslice, { selectFilter, setFilters } from '../../components/redux/slices/filterslice';
+import { fetchPizzas, selectPizza } from '../../components/redux/slices/pizzaSlice';
 
 import Categories from '../../components/Categories';
 import Sort from '../../components/Sort';
@@ -25,10 +25,8 @@ const Home = () => {
 
   const { searchValue } = useContext(Context);
 
-  const { categoryId, sort, currentPage } = useSelector(
-    (state) => state.filterSlice
-  );
-  const { pizzas, status } = useSelector((state) => state.pizzaSlice);
+  const { categoryId, sort, currentPage } = useSelector(selectFilter);
+  const { pizzas, status } = useSelector(selectPizza);
 
   // запрос к api. Получение пицц через экшен редакса
   const fetchAndUsePizzas = async () => {

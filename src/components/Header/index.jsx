@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { selectorCart } from '../redux/slices/cartSlice';
 
 import Button from '../Button';
 import Search from '../Search';
@@ -8,7 +9,8 @@ import './Header.less';
 import logo from '../../assets/react-logo.svg';
 
 const Header = () => {
-  const { totalPrice, items } = useSelector((state) => state.cartSlice);
+  const { items, totalPrice } = useSelector(selectorCart);
+  // Общее кол-во элементов
   const totalCount = items.reduce((acc, el) => acc + el.count, 0);
 
   return (
