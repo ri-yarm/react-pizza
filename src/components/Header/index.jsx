@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectorCart } from '../redux/slices/cartSlice';
 
@@ -9,9 +9,12 @@ import './Header.less';
 import logo from '../../assets/react-logo.svg';
 
 const Header = () => {
+  const {pathname} = useLocation();
   const { items, totalPrice } = useSelector(selectorCart);
   // Общее кол-во элементов
   const totalCount = items.reduce((acc, el) => acc + el.count, 0);
+
+  console.log(pathname);
 
   return (
     <div className="header">
@@ -25,12 +28,14 @@ const Header = () => {
             </div>
           </div>
         </Link>
-        <Search />
-        {/* <Link to="/cart"> */}
-        <div className="header__cart">
-          <Button totalPrice={totalPrice} totalCount={totalCount} />
-        </div>
-        {/* </Link> */}
+        {pathname !== '/cart' && (
+          <>
+            <Search />
+            <div className="header__cart">
+              <Button totalPrice={totalPrice} totalCount={totalCount} />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
