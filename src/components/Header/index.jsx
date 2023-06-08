@@ -14,7 +14,6 @@ const Header = () => {
   // Общее кол-во элементов
   const totalCount = items.reduce((acc, el) => acc + el.count, 0);
 
-  console.log(pathname);
 
   return (
     <div className="header">

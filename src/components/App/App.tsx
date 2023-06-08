@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
 import './App.less';
-import Header from '../Header';
 import Home from '../../pages/Home';
 import Cart from '../../pages/Cart';
 import PizzaFullPage from '../../pages/PizzaFullPage';

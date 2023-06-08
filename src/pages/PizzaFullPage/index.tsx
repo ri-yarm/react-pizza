@@ -1,12 +1,17 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import styles from './PizzaFullPage.module.less';
 
-const PizzaFullPage = () => {
+const PizzaFullPage: React.FC  = () => {
   const navigate = useNavigate();
-  const [pizza, setPizza] = useState({});
+  const [pizza, setPizza] = useState<{
+    imageUrl: string;
+    title: string;
+    price: number;
+  }>();
   const { id } = useParams();
 
   useEffect(() => {
@@ -24,7 +29,6 @@ const PizzaFullPage = () => {
     })();
   }, []);
 
-  console.log(id);
   return (
     <div className={styles.container}>
       <div className={styles.wrap}>
