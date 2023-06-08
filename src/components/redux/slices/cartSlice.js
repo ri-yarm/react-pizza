@@ -33,13 +33,19 @@ const cartSlice = createSlice({
     },
     decrementPizza(state, action) {
       const findItem = state.items.find((el) => el.id === action.payload);
-
+      state.totalPrice -= findItem.price;
       if (findItem) {
         findItem.count--;
       }
+
+      state.items = state.items.filter((obj) => obj.count !== 0);
     },
     removePizza(state, action) {
+      const findItem = state.items.find((el) => el.id === action.payload);
+
       state.items = state.items.filter((el) => el.id !== action.payload);
+      // state.totalPrice = state.items.reduce((acc, el) => acc - el, state.totalPrice)
+      state.totalPrice -= findItem.price * findItem.count;
     },
     clearAll(state, action) {
       state.items = [];

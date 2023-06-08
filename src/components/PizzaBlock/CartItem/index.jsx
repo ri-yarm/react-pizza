@@ -9,7 +9,9 @@ const CartItem = ({ id, title, imageUrl, price, size, count, type }) => {
   };
 
   const handleClickMinus = () => {
-    dispatch(decrementPizza(id));
+    if (count > 0) {
+      dispatch(decrementPizza(id));
+    }
   };
 
   const handleClickRemove = () => {

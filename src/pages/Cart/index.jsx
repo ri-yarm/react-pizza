@@ -20,7 +20,7 @@ const Cart = () => {
   }
 
   // Если нет денег, то нет пицц
-  if (!totalPrice) {
+  if (items.length === 0) {
     return <CartEmpty />
   }
 
