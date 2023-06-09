@@ -4,8 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSortType } from '../redux/slices/filterslice';
 
 import './Sort.less';
+import { selectFilter } from '../redux/slices/filterslice';
 
-export const sortList = [
+type SortType = {
+  name: string;
+  property: string;
+};
+
+export const sortList: SortType[] = [
   { name: 'популярности', property: 'rating' },
   { name: 'популярности возрастание', property: '-rating' },
   { name: 'цене', property: 'price' },
@@ -14,15 +20,15 @@ export const sortList = [
   { name: 'алфавиту возрастание', property: '-title' },
 ];
 
-const Sort = () => {
+const Sort: React.FC = () => {
   const dispatch = useDispatch();
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
-  const sortType = useSelector((state) => state.filterSlice.sort);
+  const { sort: sortType } = useSelector(selectFilter);
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleClickSort = (index) => {
-    dispatch(setSortType(index));
+  const handleClickSort = (el: SortType) => {
+    dispatch(setSortType(el));
     setIsVisible(false);
   };
 
@@ -38,7 +44,7 @@ const Sort = () => {
 
   //При монтировании создаём слушатель для клика вне области. При анмоунте, удаляем слушаетель
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    const handleClickOutside = (e: any) => {
       if (!e.composedPath().includes(sortRef.current)) setIsVisible(false);
     };
 

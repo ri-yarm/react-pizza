@@ -15,7 +15,7 @@ import PizzaBlock from '../../components/PizzaBlock';
 import Skeleton from '../../components/PizzaBlock/Skeleton';
 import Pagination from '../../components/Pagination';
 
-const Home = () => {
+const Home: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isSearch = useRef(false);
@@ -33,6 +33,7 @@ const Home = () => {
 
     // ! передаём всё в слайс
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         category,
         sortType,
@@ -43,7 +44,7 @@ const Home = () => {
     );
   };
 
-  const pizza = pizzas.map((el) => <PizzaBlock key={el.id} {...el} />);
+  const pizza = pizzas.map((el: any) => <PizzaBlock key={el.id} {...el} />);
   /** скелетоны для пицц */
   const skeleton = [...Array(10)].map((_, index) => <Skeleton key={index} />);
   const pizzaElements = status === 'loading' ? skeleton : pizza;

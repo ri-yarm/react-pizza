@@ -5,7 +5,7 @@ import { setPage } from '../redux/slices/filterslice';
 
 import style from './Pagination.module.less'
 
-const Pagination = () => {
+const Pagination: React.FC = () => {
   const dispatch = useDispatch()
   return (
       <ReactPaginate

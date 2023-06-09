@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import './Button.less';
 
-const Button = ({totalPrice, totalCount}) => {
+type ButtonProps = {
+  totalPrice: number;
+  totalCount: number;
+};
+
+const Button: React.FC<ButtonProps> = ({ totalPrice, totalCount }) => {
   return (
-    <Link to='/cart' className="button button--cart">
+    <Link to="/cart" className="button button--cart">
       <span>{totalPrice} ₽</span>
 
       <div className="button__delimiter"></div>

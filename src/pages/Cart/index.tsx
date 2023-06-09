@@ -8,12 +8,12 @@ import CartItem from '../../components/PizzaBlock/CartItem';
 import CartEmpty from './CartEmpty'
 
 
-const Cart = () => {
+const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const { items, totalPrice } = useSelector(selectorCart);
-  const totalCount = items.reduce((acc, el) => acc + el.count, 0);
+  const totalCount = items.reduce((acc: number, el: any) => acc + el.count, 0);
 
-  const cartElements = items.map((el) => <CartItem key={el.id} {...el} />);
+  const cartElements = items.map((el: any) => <CartItem key={el.id} {...el} />);
 
   const handleClearAll = () => {
     dispatch(clearAll())

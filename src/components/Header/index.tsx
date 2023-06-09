@@ -8,12 +8,11 @@ import './Header.less';
 
 import logo from '../../assets/react-logo.svg';
 
-const Header = () => {
-  const {pathname} = useLocation();
+const Header: React.FC = () => {
+  const { pathname } = useLocation();
   const { items, totalPrice } = useSelector(selectorCart);
   // Общее кол-во элементов
-  const totalCount = items.reduce((acc, el) => acc + el.count, 0);
-
+  const totalCount = items.reduce((acc: number, el: any) => acc + el.count, 0);
 
   return (
     <div className="header">

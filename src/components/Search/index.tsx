@@ -7,10 +7,10 @@ import debounce from 'lodash.debounce';
 
 import styles from './Search.module.less';
 
-const Search = () => {
+const Search: React.FC = () => {
   const dispatch = useDispatch()
   const {searchValue} = useSelector(selectFilter)
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState('');
   
 
@@ -18,12 +18,12 @@ const Search = () => {
   const onClickExit = () => {
     dispatch(setSearchValue(''))
     setInputValue('')
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
   // Ставим значение инпуту через 400мс. Благодаря useCallback функция не пересоздаётся
   const onSearchValue = useCallback(
-    debounce((str) => {
+    debounce((str: string) => {
       dispatch(setSearchValue(str));
     }, 400),
     []
@@ -34,7 +34,7 @@ const Search = () => {
    * @onSearchValue Сохраняет значение инпута в глобальный стейт,
    * а благодаря @onSearchValue , делает этот через 400мс
    */
-  const OnChangeInput = (e) => {
+  const OnChangeInput = (e: any) => {
     setInputValue(e.target.value);
     onSearchValue(inputValue);
   };
